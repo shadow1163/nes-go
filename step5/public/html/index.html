@@ -1,0 +1,36 @@
+<!doctype html><meta charset=utf-8>
+<html>
+    <head>
+        <style>
+        body {
+            background-repeat: no-repeat;
+        }        
+        </style>
+        <script src="/public/js/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript">
+            $("body,html").keydown(function(event) {
+                if ( event.which == 13 ) {
+                    event.preventDefault();
+                }
+                $.get('/key?event='+event.which);
+            });
+            setInterval(function() {
+                $.get('/frame', function(data) {
+                    var canvas = document.getElementById('canvas');
+			        var ctx = canvas.getContext('2d');
+			        var img = new Image();
+			        img.src = data;
+			        img.onload = () => {
+				        ctx.drawImage(img, 0, 0);
+			        }
+                });
+            }, 100)
+        </script>
+    </head>
+    <body>
+        <!-- <input id='txt'></input> -->
+        <canvas id="canvas" width="256" height="240">
+            Your browser doesn't support HTML5 canvas element.
+        </canvas>
+    </body>
+</html>
